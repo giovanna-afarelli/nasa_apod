@@ -36,6 +36,9 @@ class HomePageController {
   }
 
   void onTapImage(BuildContext context, Apod image) {
-    Navigator.of(context).pushNamed(DetailsPage.routeName);
+    Navigator.of(context).pushNamed(DetailsPage.routeName,
+        arguments: DetailsPageArgs(
+          apod: image,
+        ));
   }
 }

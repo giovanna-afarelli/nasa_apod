@@ -29,7 +29,9 @@ class RouteGenerator {
       case HomePage.routeName:
         return const HomePage();
       case DetailsPage.routeName:
-        return const DetailsPage();
+        return DetailsPage(
+          args: args as DetailsPageArgs,
+        );
       default:
         return null;
     }
