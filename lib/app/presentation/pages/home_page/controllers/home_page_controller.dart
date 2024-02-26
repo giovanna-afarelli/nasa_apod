@@ -67,4 +67,8 @@ class HomePageController {
       _loadImagesList();
     }
   }
+
+  void onTapTryLoadingAgain() {
+    _loadImagesList();
+  }
 }

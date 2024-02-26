@@ -53,8 +53,20 @@ class _HomePageState extends State<HomePage> {
           }
           if (pageStore.hasErrorLoadingMoreImages &&
               pageStore.imagesList.isEmpty) {
-            return const Center(
-              child: Text("Ocorreu um erro"),
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text("Ocorreu um erro ao carregar a lista"),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  ElevatedButton(
+                    onPressed: () => pageController.onTapTryLoadingAgain(),
+                    child: const Text("Tentar novamente"),
+                  ),
+                ],
+              ),
             );
           }
           return Column(
@@ -95,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                             height: 12,
                           );
                         },
-                        itemCount: pageStore.searchResult!.length ?? 0,
+                        itemCount: pageStore.searchResult!.length,
                         itemBuilder: (ctx, index) {
                           return InkWell(
                             onTap: () => pageController.onTapImage(
