@@ -15,10 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'NASA APOD',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: ThemeData(colorScheme: const ColorScheme.dark()),
       initialRoute: SplashScreen.routeName,
       onGenerateRoute: RouteGenerator.generateRoute,
     );

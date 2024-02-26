@@ -12,6 +12,7 @@ class ApodModel extends Apod {
     super.mediaType,
     super.explanation,
     super.thumbnailUrl,
+    super.date,
   });
 
   ApodModel copyWith({
@@ -22,6 +23,7 @@ class ApodModel extends Apod {
     String? mediaType,
     String? explanation,
     String? thumbnailUrl,
+    String? date,
   }) {
     return ApodModel(
       resource: resource ?? this.resource,
@@ -31,6 +33,7 @@ class ApodModel extends Apod {
       mediaType: mediaType ?? this.mediaType,
       explanation: explanation ?? this.explanation,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
+      date: date ?? this.date,
     );
   }
 
@@ -43,6 +46,7 @@ class ApodModel extends Apod {
       'mediaType': mediaType,
       'explanation': explanation,
       'thumbnailUrl': thumbnailUrl,
+      'date': date,
     };
   }
 
@@ -55,6 +59,7 @@ class ApodModel extends Apod {
       mediaType: map['mediaType'] as String?,
       explanation: map['explanation'] as String?,
       thumbnailUrl: map['thumbnailUrl'] as String?,
+      date: map['date'] as String?,
     );
   }
 
@@ -65,7 +70,7 @@ class ApodModel extends Apod {
 
   @override
   String toString() {
-    return 'ApodModel(resource: $resource, title: $title, url: $url, hdurl: $hdurl, mediaType: $mediaType, explanation: $explanation, thumbnailUrl: $thumbnailUrl)';
+    return 'ApodModel(resource: $resource, title: $title, url: $url, hdurl: $hdurl, mediaType: $mediaType, explanation: $explanation, thumbnailUrl: $thumbnailUrl, date: $date)';
   }
 
   @override
@@ -78,7 +83,8 @@ class ApodModel extends Apod {
         other.hdurl == hdurl &&
         other.mediaType == mediaType &&
         other.explanation == explanation &&
-        other.thumbnailUrl == thumbnailUrl;
+        other.thumbnailUrl == thumbnailUrl &&
+        other.date == date;
   }
 
   @override
@@ -89,6 +95,7 @@ class ApodModel extends Apod {
         hdurl.hashCode ^
         mediaType.hashCode ^
         explanation.hashCode ^
-        thumbnailUrl.hashCode;
+        thumbnailUrl.hashCode ^
+        date.hashCode;
   }
 }

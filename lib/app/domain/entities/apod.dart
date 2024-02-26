@@ -6,6 +6,7 @@ class Apod {
   final String? mediaType;
   final String? explanation;
   final String? thumbnailUrl;
+  final String? date;
 
   Apod({
     this.resource,
@@ -15,5 +16,6 @@ class Apod {
     this.mediaType,
     this.explanation,
     this.thumbnailUrl,
+    this.date,
   });
 }
