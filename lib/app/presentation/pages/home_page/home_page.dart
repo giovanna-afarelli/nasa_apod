@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:nasa_apod/app/presentation/pages/home_page/controllers/home_page_controller.dart';
 import 'package:nasa_apod/app/presentation/pages/home_page/stores/home_page_store.dart';
-import 'package:nasa_apod/app/presentation/pages/home_page/widgets/image_list.dart';
+import 'package:nasa_apod/app/presentation/pages/home_page/widgets/image_list_item.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
           horizontal: 24,
         ),
         child: Observer(builder: (context) {
-          if (pageStore.isLoadingImagesList) {
+          if (pageStore.isLoadingMoreImages && pageStore.imagesList.isEmpty) {
             return const Center(
               child: SizedBox(
                 height: 40,
@@ -51,7 +51,8 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           }
-          if (pageStore.hasErrorLoadingImagesList) {
+          if (pageStore.hasErrorLoadingMoreImages &&
+              pageStore.imagesList.isEmpty) {
             return const Center(
               child: Text("Ocorreu um erro"),
             );
@@ -73,28 +74,74 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 24,
               ),
-              Expanded(
-                child: Observer(builder: (context) {
-                  if (pageStore.searchTerm?.isNotEmpty ?? false) {
-                    if (pageStore.searchResult == null) {
-                      return const SizedBox.shrink();
+              NotificationListener<ScrollNotification>(
+                onNotification: (notification) {
+                  if (notification is ScrollEndNotification &&
+                      notification.metrics.extentAfter == 0) {
+                    pageController.loadMoreImages();
+                  }
+                  return false;
+                },
+                child: Expanded(
+                  child: Observer(builder: (context) {
+                    if (pageStore.searchTerm?.isNotEmpty ?? false) {
+                      if (pageStore.searchResult == null) {
+                        return const SizedBox.shrink();
+                      }
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        separatorBuilder: (ctx, index) {
+                          return const SizedBox(
+                            height: 12,
+                          );
+                        },
+                        itemCount: pageStore.searchResult!.length ?? 0,
+                        itemBuilder: (ctx, index) {
+                          return InkWell(
+                            onTap: () => pageController.onTapImage(
+                                context, pageStore.searchResult![index]),
+                            child: ImageListItem(
+                              image: pageStore.searchResult![index],
+                            ),
+                          );
+                        },
+                      );
                     }
-                    return ImageList(
-                      list: pageStore.searchResult,
-                      onTapItem: (index) => pageController.onTapImage(
-                          context, pageStore.searchResult![index]),
-                    );
-                  }
 
-                  if (pageStore.imagesList == null) {
-                    return const SizedBox.shrink();
-                  }
-                  return ImageList(
-                    list: pageStore.imagesList,
-                    onTapItem: (index) => pageController.onTapImage(
-                        context, pageStore.imagesList![index]),
-                  );
-                }),
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      separatorBuilder: (ctx, index) {
+                        return const SizedBox(
+                          height: 12,
+                        );
+                      },
+                      itemCount: pageStore.imagesList.length + 1,
+                      itemBuilder: (ctx, index) {
+                        if (index < pageStore.imagesList.length) {
+                          return InkWell(
+                            onTap: () => pageController.onTapImage(
+                                context, pageStore.imagesList[index]),
+                            child: ImageListItem(
+                              image: pageStore.imagesList[index],
+                            ),
+                          );
+                        }
+                        return const Center(
+                          child: SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: LoadingIndicator(
+                              indicatorType: Indicator.ballPulse,
+                              colors: [
+                                Colors.blue,
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }),
+                ),
               ),
             ],
           );

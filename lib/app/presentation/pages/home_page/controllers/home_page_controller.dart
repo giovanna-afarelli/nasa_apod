@@ -5,6 +5,7 @@ import 'package:nasa_apod/app/presentation/pages/details_page/details_page.dart'
 import 'package:nasa_apod/app/presentation/pages/home_page/stores/home_page_store.dart';
 import 'package:nasa_apod/di.dart';
 import 'package:nasa_apod/shared/utils/dartz_utils.dart';
+import 'package:nasa_apod/shared/utils/datetime_utils.dart';
 
 class HomePageController {
   final HomePageStore pageStore;
@@ -24,20 +25,22 @@ class HomePageController {
   }
 
   void _loadImagesList() async {
-    pageStore.setIsLoadingImagesList(true);
+    pageStore.setIsLoadingMoreImages(true);
+
     final listOrFailure = await getApodImagesListUsecase(
       GetApodImagesListUsecaseParams(
-        startDate: "2024-02-01",
-        endDate: "2024-02-15",
+        startDate: DateTimeUtils.getNasaFormattedTime(pageStore.startDate),
+        endDate: DateTimeUtils.getNasaFormattedTime(pageStore.endDate),
       ),
     );
-    pageStore.setIsLoadingImagesList(false);
+
+    pageStore.setIsLoadingMoreImages(false);
 
     if (listOrFailure.isLeft()) {
-      pageStore.setHasErrorLoadingImagesList(true);
+      pageStore.setHasErrorLoadingMoreImages(true);
       return;
     }
-    pageStore.setImagesList(listOrFailure.asRight());
+    pageStore.setImagesList(listOrFailure.asRight().reversed.toList());
   }
 
   void onTapImage(BuildContext context, Apod image) {
@@ -50,11 +53,18 @@ class HomePageController {
   void _onChangeSearchTerm(String text) {
     pageStore.setSearchTerm(text);
     final searchResult = pageStore.imagesList
-        ?.where((image) =>
+        .where((image) =>
             (image.title?.contains(text) ?? false) ||
             (image.date?.contains(text) ?? false))
         .toList();
 
     pageStore.setSearchResult(searchResult);
+  }
+
+  void loadMoreImages() {
+    if (!pageStore.isLoadingMoreImages) {
+      pageStore.setPage(pageStore.page + 1);
+      _loadImagesList();
+    }
   }
 }

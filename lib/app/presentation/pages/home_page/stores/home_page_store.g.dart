@@ -9,52 +9,67 @@ part of 'home_page_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$HomePageStore on _HomePageStoreBase, Store {
+  Computed<DateTime>? _$endDateComputed;
+
+  @override
+  DateTime get endDate =>
+      (_$endDateComputed ??= Computed<DateTime>(() => super.endDate,
+              name: '_HomePageStoreBase.endDate'))
+          .value;
+  Computed<DateTime>? _$startDateComputed;
+
+  @override
+  DateTime get startDate =>
+      (_$startDateComputed ??= Computed<DateTime>(() => super.startDate,
+              name: '_HomePageStoreBase.startDate'))
+          .value;
+
   late final _$imagesListAtom =
       Atom(name: '_HomePageStoreBase.imagesList', context: context);
 
   @override
-  List<Apod>? get imagesList {
+  ObservableList<Apod> get imagesList {
     _$imagesListAtom.reportRead();
     return super.imagesList;
   }
 
   @override
-  set imagesList(List<Apod>? value) {
+  set imagesList(ObservableList<Apod> value) {
     _$imagesListAtom.reportWrite(value, super.imagesList, () {
       super.imagesList = value;
     });
   }
 
-  late final _$isLoadingImagesListAtom =
-      Atom(name: '_HomePageStoreBase.isLoadingImagesList', context: context);
+  late final _$isLoadingMoreImagesAtom =
+      Atom(name: '_HomePageStoreBase.isLoadingMoreImages', context: context);
 
   @override
-  bool get isLoadingImagesList {
-    _$isLoadingImagesListAtom.reportRead();
-    return super.isLoadingImagesList;
+  bool get isLoadingMoreImages {
+    _$isLoadingMoreImagesAtom.reportRead();
+    return super.isLoadingMoreImages;
   }
 
   @override
-  set isLoadingImagesList(bool value) {
-    _$isLoadingImagesListAtom.reportWrite(value, super.isLoadingImagesList, () {
-      super.isLoadingImagesList = value;
+  set isLoadingMoreImages(bool value) {
+    _$isLoadingMoreImagesAtom.reportWrite(value, super.isLoadingMoreImages, () {
+      super.isLoadingMoreImages = value;
     });
   }
 
-  late final _$hasErrorLoadingImagesListAtom = Atom(
-      name: '_HomePageStoreBase.hasErrorLoadingImagesList', context: context);
+  late final _$hasErrorLoadingMoreImagesAtom = Atom(
+      name: '_HomePageStoreBase.hasErrorLoadingMoreImages', context: context);
 
   @override
-  bool get hasErrorLoadingImagesList {
-    _$hasErrorLoadingImagesListAtom.reportRead();
-    return super.hasErrorLoadingImagesList;
+  bool get hasErrorLoadingMoreImages {
+    _$hasErrorLoadingMoreImagesAtom.reportRead();
+    return super.hasErrorLoadingMoreImages;
   }
 
   @override
-  set hasErrorLoadingImagesList(bool value) {
-    _$hasErrorLoadingImagesListAtom
-        .reportWrite(value, super.hasErrorLoadingImagesList, () {
-      super.hasErrorLoadingImagesList = value;
+  set hasErrorLoadingMoreImages(bool value) {
+    _$hasErrorLoadingMoreImagesAtom
+        .reportWrite(value, super.hasErrorLoadingMoreImages, () {
+      super.hasErrorLoadingMoreImages = value;
     });
   }
 
@@ -90,6 +105,22 @@ mixin _$HomePageStore on _HomePageStoreBase, Store {
     });
   }
 
+  late final _$pageAtom =
+      Atom(name: '_HomePageStoreBase.page', context: context);
+
+  @override
+  int get page {
+    _$pageAtom.reportRead();
+    return super.page;
+  }
+
+  @override
+  set page(int value) {
+    _$pageAtom.reportWrite(value, super.page, () {
+      super.page = value;
+    });
+  }
+
   late final _$_HomePageStoreBaseActionController =
       ActionController(name: '_HomePageStoreBase', context: context);
 
@@ -105,22 +136,22 @@ mixin _$HomePageStore on _HomePageStoreBase, Store {
   }
 
   @override
-  void setIsLoadingImagesList(bool value) {
+  void setIsLoadingMoreImages(bool value) {
     final _$actionInfo = _$_HomePageStoreBaseActionController.startAction(
-        name: '_HomePageStoreBase.setIsLoadingImagesList');
+        name: '_HomePageStoreBase.setIsLoadingMoreImages');
     try {
-      return super.setIsLoadingImagesList(value);
+      return super.setIsLoadingMoreImages(value);
     } finally {
       _$_HomePageStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setHasErrorLoadingImagesList(bool value) {
+  void setHasErrorLoadingMoreImages(bool value) {
     final _$actionInfo = _$_HomePageStoreBaseActionController.startAction(
-        name: '_HomePageStoreBase.setHasErrorLoadingImagesList');
+        name: '_HomePageStoreBase.setHasErrorLoadingMoreImages');
     try {
-      return super.setHasErrorLoadingImagesList(value);
+      return super.setHasErrorLoadingMoreImages(value);
     } finally {
       _$_HomePageStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -149,13 +180,27 @@ mixin _$HomePageStore on _HomePageStoreBase, Store {
   }
 
   @override
+  void setPage(int value) {
+    final _$actionInfo = _$_HomePageStoreBaseActionController.startAction(
+        name: '_HomePageStoreBase.setPage');
+    try {
+      return super.setPage(value);
+    } finally {
+      _$_HomePageStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 imagesList: ${imagesList},
-isLoadingImagesList: ${isLoadingImagesList},
-hasErrorLoadingImagesList: ${hasErrorLoadingImagesList},
+isLoadingMoreImages: ${isLoadingMoreImages},
+hasErrorLoadingMoreImages: ${hasErrorLoadingMoreImages},
 searchTerm: ${searchTerm},
-searchResult: ${searchResult}
+searchResult: ${searchResult},
+page: ${page},
+endDate: ${endDate},
+startDate: ${startDate}
     ''';
   }
 }

@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:nasa_apod/app/domain/entities/apod.dart';
+import 'package:nasa_apod/shared/constants.dart';
 
 part 'home_page_store.g.dart';
 
@@ -7,27 +8,27 @@ class HomePageStore = _HomePageStoreBase with _$HomePageStore;
 
 abstract class _HomePageStoreBase with Store {
   @observable
-  List<Apod>? imagesList;
+  ObservableList<Apod> imagesList = ObservableList.of([]);
 
   @action
   void setImagesList(List<Apod> list) {
-    imagesList = list;
+    imagesList.addAll(list);
   }
 
   @observable
-  bool isLoadingImagesList = false;
+  bool isLoadingMoreImages = false;
 
   @action
-  void setIsLoadingImagesList(bool value) {
-    isLoadingImagesList = value;
+  void setIsLoadingMoreImages(bool value) {
+    isLoadingMoreImages = value;
   }
 
   @observable
-  bool hasErrorLoadingImagesList = false;
+  bool hasErrorLoadingMoreImages = false;
 
   @action
-  void setHasErrorLoadingImagesList(bool value) {
-    hasErrorLoadingImagesList = value;
+  void setHasErrorLoadingMoreImages(bool value) {
+    hasErrorLoadingMoreImages = value;
   }
 
   @observable
@@ -45,4 +46,21 @@ abstract class _HomePageStoreBase with Store {
   void setSearchResult(List<Apod>? list) {
     searchResult = list;
   }
+
+  @observable
+  int page = 0;
+
+  @action
+  void setPage(int value) {
+    page = value;
+  }
+
+  @computed
+  DateTime get endDate => DateTime.now()
+      .subtract(Duration(days: page * (Constants.daysToFetchPictures + 1)));
+
+  @computed
+  DateTime get startDate => endDate.subtract(
+        const Duration(days: Constants.daysToFetchPictures),
+      );
 }
