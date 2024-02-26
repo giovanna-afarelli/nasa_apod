@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:nasa_apod/app/presentation/pages/home_page/controllers/home_page_controller.dart';
 import 'package:nasa_apod/app/presentation/pages/home_page/stores/home_page_store.dart';
-import 'package:nasa_apod/app/presentation/pages/home_page/widgets/image_list_item.dart';
+import 'package:nasa_apod/app/presentation/pages/home_page/widgets/image_list.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -56,26 +56,47 @@ class _HomePageState extends State<HomePage> {
               child: Text("Ocorreu um erro"),
             );
           }
-          return ListView.separated(
-            shrinkWrap: true,
-            separatorBuilder: (ctx, index) {
-              return const SizedBox(
-                height: 12,
-              );
-            },
-            itemCount: pageStore.imagesList?.length ?? 0,
-            itemBuilder: (ctx, index) {
-              if (pageStore.imagesList?[index] == null) {
-                return const SizedBox.shrink();
-              }
-              return InkWell(
-                onTap: () => pageController.onTapImage(
-                    context, pageStore.imagesList![index]),
-                child: ImageListItem(
-                  image: pageStore.imagesList![index],
+          return Column(
+            children: [
+              const SizedBox(
+                height: 16,
+              ),
+              TextField(
+                controller: pageController.searchController,
+                decoration: const InputDecoration(
+                  hintText: "Search",
+                  prefixIcon: Icon(
+                    Icons.search,
+                  ),
                 ),
-              );
-            },
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              Expanded(
+                child: Observer(builder: (context) {
+                  if (pageStore.searchTerm?.isNotEmpty ?? false) {
+                    if (pageStore.searchResult == null) {
+                      return const SizedBox.shrink();
+                    }
+                    return ImageList(
+                      list: pageStore.searchResult,
+                      onTapItem: (index) => pageController.onTapImage(
+                          context, pageStore.searchResult![index]),
+                    );
+                  }
+
+                  if (pageStore.imagesList == null) {
+                    return const SizedBox.shrink();
+                  }
+                  return ImageList(
+                    list: pageStore.imagesList,
+                    onTapItem: (index) => pageController.onTapImage(
+                        context, pageStore.imagesList![index]),
+                  );
+                }),
+              ),
+            ],
           );
         }),
       ),

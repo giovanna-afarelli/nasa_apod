@@ -8,7 +8,9 @@ import 'package:nasa_apod/shared/utils/dartz_utils.dart';
 
 class HomePageController {
   final HomePageStore pageStore;
+
   final getApodImagesListUsecase = Di.get<GetApodImagesListUsecase>();
+  final searchController = TextEditingController();
 
   HomePageController({
     required this.pageStore,
@@ -16,6 +18,9 @@ class HomePageController {
 
   void initialize() {
     _loadImagesList();
+
+    searchController
+        .addListener(() => _onChangeSearchTerm(searchController.text));
   }
 
   void _loadImagesList() async {
@@ -40,5 +45,16 @@ class HomePageController {
         arguments: DetailsPageArgs(
           apod: image,
         ));
+  }
+
+  void _onChangeSearchTerm(String text) {
+    pageStore.setSearchTerm(text);
+    final searchResult = pageStore.imagesList
+        ?.where((image) =>
+            (image.title?.contains(text) ?? false) ||
+            (image.date?.contains(text) ?? false))
+        .toList();
+
+    pageStore.setSearchResult(searchResult);
   }
 }

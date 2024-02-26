@@ -58,6 +58,38 @@ mixin _$HomePageStore on _HomePageStoreBase, Store {
     });
   }
 
+  late final _$searchTermAtom =
+      Atom(name: '_HomePageStoreBase.searchTerm', context: context);
+
+  @override
+  String? get searchTerm {
+    _$searchTermAtom.reportRead();
+    return super.searchTerm;
+  }
+
+  @override
+  set searchTerm(String? value) {
+    _$searchTermAtom.reportWrite(value, super.searchTerm, () {
+      super.searchTerm = value;
+    });
+  }
+
+  late final _$searchResultAtom =
+      Atom(name: '_HomePageStoreBase.searchResult', context: context);
+
+  @override
+  List<Apod>? get searchResult {
+    _$searchResultAtom.reportRead();
+    return super.searchResult;
+  }
+
+  @override
+  set searchResult(List<Apod>? value) {
+    _$searchResultAtom.reportWrite(value, super.searchResult, () {
+      super.searchResult = value;
+    });
+  }
+
   late final _$_HomePageStoreBaseActionController =
       ActionController(name: '_HomePageStoreBase', context: context);
 
@@ -95,11 +127,35 @@ mixin _$HomePageStore on _HomePageStoreBase, Store {
   }
 
   @override
+  void setSearchTerm(String value) {
+    final _$actionInfo = _$_HomePageStoreBaseActionController.startAction(
+        name: '_HomePageStoreBase.setSearchTerm');
+    try {
+      return super.setSearchTerm(value);
+    } finally {
+      _$_HomePageStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setSearchResult(List<Apod>? list) {
+    final _$actionInfo = _$_HomePageStoreBaseActionController.startAction(
+        name: '_HomePageStoreBase.setSearchResult');
+    try {
+      return super.setSearchResult(list);
+    } finally {
+      _$_HomePageStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 imagesList: ${imagesList},
 isLoadingImagesList: ${isLoadingImagesList},
-hasErrorLoadingImagesList: ${hasErrorLoadingImagesList}
+hasErrorLoadingImagesList: ${hasErrorLoadingImagesList},
+searchTerm: ${searchTerm},
+searchResult: ${searchResult}
     ''';
   }
 }

@@ -29,4 +29,20 @@ abstract class _HomePageStoreBase with Store {
   void setHasErrorLoadingImagesList(bool value) {
     hasErrorLoadingImagesList = value;
   }
+
+  @observable
+  String? searchTerm;
+
+  @action
+  void setSearchTerm(String value) {
+    searchTerm = value;
+  }
+
+  @observable
+  List<Apod>? searchResult;
+
+  @action
+  void setSearchResult(List<Apod>? list) {
+    searchResult = list;
+  }
 }
