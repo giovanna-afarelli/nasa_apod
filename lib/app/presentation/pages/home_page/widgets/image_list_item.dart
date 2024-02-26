@@ -24,38 +24,41 @@ class ImageListItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Image.network(
-            image.url ?? "",
-            height: 70,
-            width: 70,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) {
-                return child;
-              }
-              return const SizedBox(
-                height: 70,
-                width: 70,
-                child: Center(
-                    child: SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: LoadingIndicator(
-                    indicatorType: Indicator.orbit,
-                    colors: [
-                      Colors.blue,
-                    ],
-                  ),
-                )),
-              );
-            },
-            errorBuilder: (context, error, stackTrace) {
-              return Container(
-                height: 70,
-                width: 70,
-                decoration: const BoxDecoration(color: Colors.grey),
-                child: const Center(child: Text("X")),
-              );
-            },
+          Hero(
+            tag: "apod_image_${image.title}",
+            child: Image.network(
+              image.url ?? "",
+              height: 70,
+              width: 70,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return const SizedBox(
+                  height: 70,
+                  width: 70,
+                  child: Center(
+                      child: SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: LoadingIndicator(
+                      indicatorType: Indicator.orbit,
+                      colors: [
+                        Colors.blue,
+                      ],
+                    ),
+                  )),
+                );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  height: 70,
+                  width: 70,
+                  decoration: const BoxDecoration(color: Colors.grey),
+                  child: const Center(child: Text("X")),
+                );
+              },
+            ),
           ),
           const SizedBox(
             width: 8,

@@ -32,40 +32,43 @@ class DetailsPage extends StatelessWidget {
             const SizedBox(
               height: 24,
             ),
-            Image.network(
-              args.apod.url ?? "",
-              height: 200,
-              width: double.infinity,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) {
-                  return child;
-                }
-                return const SizedBox(
-                  height: 200,
-                  width: double.infinity,
-                  child: Center(
-                      child: SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: LoadingIndicator(
-                      indicatorType: Indicator.orbit,
-                      colors: [
-                        Colors.blue,
-                      ],
+            Hero(
+              tag: "apod_image_${args.apod.title}",
+              child: Image.network(
+                args.apod.url ?? "",
+                height: 200,
+                width: double.infinity,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+                  return const SizedBox(
+                    height: 200,
+                    width: double.infinity,
+                    child: Center(
+                        child: SizedBox(
+                      height: 40,
+                      width: 40,
+                      child: LoadingIndicator(
+                        indicatorType: Indicator.orbit,
+                        colors: [
+                          Colors.blue,
+                        ],
+                      ),
+                    )),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: 200,
+                    width: double.infinity,
+                    decoration: const BoxDecoration(color: Colors.grey),
+                    child: const Center(
+                      child: Text("X"),
                     ),
-                  )),
-                );
-              },
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  height: 200,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(color: Colors.grey),
-                  child: const Center(
-                    child: Text("X"),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
             const SizedBox(
               height: 24,
