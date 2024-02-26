@@ -2,11 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:nasa_apod/app/data/models/apod_model.dart';
 import 'package:nasa_apod/app/domain/datasources/nasa_datasource.dart';
 import 'package:nasa_apod/app/domain/entities/apod.dart';
-import 'package:nasa_apod/di.dart';
 import 'package:nasa_apod/shared/constants.dart';
 
 class NasaDatasourceImpl implements NasaDatasource {
-  final dio = Di.get<Dio>();
+  final Dio dio;
+
+  NasaDatasourceImpl(this.dio);
 
   @override
   Future<List<Apod>> getImagesList({
@@ -29,8 +30,12 @@ class NasaDatasourceImpl implements NasaDatasource {
       '/planetary/apod',
       queryParameters: queryParams,
     );
-    return (response.data as List)
-        .map((apod) => ApodModel.fromMap(apod))
-        .toList();
+    return response.data is List
+        ? (response.data as List)
+            .map((apod) => ApodModel.fromMap(apod))
+            .toList()
+        : [
+            ApodModel.fromMap(response.data),
+          ];
   }
 }

@@ -6,6 +6,7 @@ import 'package:nasa_apod/app/data/usecases/get_apod_images_list_usecase_impl.da
 import 'package:nasa_apod/app/domain/datasources/nasa_datasource.dart';
 import 'package:nasa_apod/app/domain/repositories/nasa_repository.dart';
 import 'package:nasa_apod/app/domain/usecases/get_apod_images_list_usecase.dart';
+import 'package:nasa_apod/shared/constants.dart';
 
 class Di {
   static Future<void> setup() async {
@@ -14,7 +15,7 @@ class Di {
     getIt.registerLazySingleton<Dio>(
       () => Dio(
         BaseOptions(
-          baseUrl: "https://api.nasa.gov/",
+          baseUrl: Constants.nasaBaseApiUrl,
           connectTimeout: const Duration(seconds: 60),
           receiveTimeout: const Duration(seconds: 60),
         ),
@@ -23,12 +24,12 @@ class Di {
 
     // DATASOURCES
     getIt.registerLazySingleton<NasaDatasource>(
-      () => NasaDatasourceImpl(),
+      () => NasaDatasourceImpl(getIt.get()),
     );
 
     // REPOSITORIES
     getIt.registerLazySingleton<NasaRepository>(
-      () => NasaRepositoryImpl(),
+      () => NasaRepositoryImpl(getIt.get()),
     );
 
     // USECASES
