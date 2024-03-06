@@ -67,8 +67,9 @@ class HomePageController {
     pageStore.setSearchTerm(text);
     final searchResult = pageStore.imagesList
         .where((image) =>
-            (image.title?.contains(text) ?? false) ||
-            (image.date?.contains(text) ?? false))
+            (image.title?.toLowerCase().contains(text.toLowerCase()) ??
+                false) ||
+            (image.date?.toLowerCase().contains(text.toLowerCase()) ?? false))
         .toList();
 
     pageStore.setSearchResult(searchResult);
