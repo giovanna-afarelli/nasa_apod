@@ -5,24 +5,25 @@ import 'package:nasa_apod/app/domain/usecases/get_apod_images_list_usecase.dart'
 import 'package:nasa_apod/app/domain/usecases/save_most_recent_apod_in_local_storage_usecase.dart';
 import 'package:nasa_apod/app/presentation/pages/details_page/details_page.dart';
 import 'package:nasa_apod/app/presentation/pages/home_page/stores/home_page_store.dart';
-import 'package:nasa_apod/di.dart';
 import 'package:nasa_apod/shared/usecase.dart';
 import 'package:nasa_apod/shared/utils/dartz_utils.dart';
 import 'package:nasa_apod/shared/utils/datetime_utils.dart';
 
 class HomePageController {
   final HomePageStore pageStore;
+  final GetApodImagesListUsecase getApodImagesListUsecase;
+  final SaveMostRecentApodInLocalStorageUsecase
+      saveMostRecentApodInLocalStorageUsecase;
+  final GetApodFromLocalStorageUsecase getApodFromLocalStorageUsecase;
 
-  final getApodImagesListUsecase = Di.get<GetApodImagesListUsecase>();
   final searchController = TextEditingController();
-  final saveMostRecentApodInLocalStorageUsecase =
-      Di.get<SaveMostRecentApodInLocalStorageUsecase>();
-  final getApodFromLocalStorageUsecase =
-      Di.get<GetApodFromLocalStorageUsecase>();
 
-  HomePageController({
-    required this.pageStore,
-  });
+  HomePageController(
+    this.pageStore,
+    this.getApodImagesListUsecase,
+    this.saveMostRecentApodInLocalStorageUsecase,
+    this.getApodFromLocalStorageUsecase,
+  );
 
   void initialize() {
     _loadImagesList();

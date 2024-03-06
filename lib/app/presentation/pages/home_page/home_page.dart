@@ -4,6 +4,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:nasa_apod/app/presentation/pages/home_page/controllers/home_page_controller.dart';
 import 'package:nasa_apod/app/presentation/pages/home_page/stores/home_page_store.dart';
 import 'package:nasa_apod/app/presentation/pages/home_page/widgets/image_list_item.dart';
+import 'package:nasa_apod/di.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -15,8 +16,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final pageStore = HomePageStore();
-  late final pageController = HomePageController(pageStore: pageStore);
+  final pageStore = Di.get<HomePageStore>();
+  final pageController = Di.get<HomePageController>();
 
   @override
   void initState() {

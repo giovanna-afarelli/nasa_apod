@@ -10,6 +10,8 @@ import 'package:nasa_apod/app/domain/repositories/nasa_repository.dart';
 import 'package:nasa_apod/app/domain/usecases/get_apod_from_local_storage_usecase.dart';
 import 'package:nasa_apod/app/domain/usecases/get_apod_images_list_usecase.dart';
 import 'package:nasa_apod/app/domain/usecases/save_most_recent_apod_in_local_storage_usecase.dart';
+import 'package:nasa_apod/app/presentation/pages/home_page/controllers/home_page_controller.dart';
+import 'package:nasa_apod/app/presentation/pages/home_page/stores/home_page_store.dart';
 import 'package:nasa_apod/shared/constants.dart';
 import 'package:nasa_apod/shared/services/local_storage_service.dart';
 
@@ -52,6 +54,11 @@ class Di {
     getIt.registerLazySingleton<GetApodFromLocalStorageUsecase>(
       () => GetApodFromLocalStorageUsecaseImpl(getIt.get()),
     );
+
+    //PAGES
+    getIt.registerLazySingleton<HomePageStore>(() => HomePageStore());
+    getIt.registerLazySingleton<HomePageController>(() =>
+        HomePageController(getIt.get(), getIt.get(), getIt.get(), getIt.get()));
   }
 
   static T get<T extends Object>({
