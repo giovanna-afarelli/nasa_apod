@@ -44,13 +44,13 @@ class Di {
 
     // USECASES
     getIt.registerLazySingleton<GetApodImagesListUsecase>(
-      () => GetApodImagesListUsecaseImpl(),
+      () => GetApodImagesListUsecaseImpl(getIt.get()),
     );
     getIt.registerLazySingleton<SaveMostRecentApodInLocalStorageUsecase>(
-      () => SaveMostRecentApodInLocalStorageUsecaseImpl(),
+      () => SaveMostRecentApodInLocalStorageUsecaseImpl(getIt.get()),
     );
     getIt.registerLazySingleton<GetApodFromLocalStorageUsecase>(
-      () => GetApodFromLocalStorageUsecaseImpl(),
+      () => GetApodFromLocalStorageUsecaseImpl(getIt.get()),
     );
   }
 

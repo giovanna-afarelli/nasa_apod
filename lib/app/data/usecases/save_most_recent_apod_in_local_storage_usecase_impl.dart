@@ -1,13 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:nasa_apod/app/domain/usecases/save_most_recent_apod_in_local_storage_usecase.dart';
-import 'package:nasa_apod/di.dart';
 import 'package:nasa_apod/shared/errors/failure.dart';
 import 'package:nasa_apod/shared/errors/local_storage_failure.dart';
 import 'package:nasa_apod/shared/services/local_storage_service.dart';
 
 class SaveMostRecentApodInLocalStorageUsecaseImpl
     implements SaveMostRecentApodInLocalStorageUsecase {
-  final localStorageService = Di.get<LocalStorageService>();
+  final LocalStorageService localStorageService;
+
+  SaveMostRecentApodInLocalStorageUsecaseImpl(this.localStorageService);
 
   @override
   Future<Either<Failure, bool>> call(

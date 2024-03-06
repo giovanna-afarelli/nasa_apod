@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:nasa_apod/app/domain/entities/apod.dart';
 import 'package:nasa_apod/app/domain/usecases/get_apod_from_local_storage_usecase.dart';
-import 'package:nasa_apod/di.dart';
 import 'package:nasa_apod/shared/errors/failure.dart';
 import 'package:nasa_apod/shared/errors/local_storage_failure.dart';
 import 'package:nasa_apod/shared/services/local_storage_service.dart';
@@ -9,7 +8,9 @@ import 'package:nasa_apod/shared/usecase.dart';
 
 class GetApodFromLocalStorageUsecaseImpl
     implements GetApodFromLocalStorageUsecase {
-  final localStorageService = Di.get<LocalStorageService>();
+  final LocalStorageService localStorageService;
+
+  GetApodFromLocalStorageUsecaseImpl(this.localStorageService);
 
   @override
   Future<Either<Failure, Apod>> call(NoParams params) async {
