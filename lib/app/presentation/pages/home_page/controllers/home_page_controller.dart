@@ -26,6 +26,7 @@ class HomePageController {
   );
 
   void initialize() {
+    pageStore.resetStore();
     _loadImagesList();
 
     searchController

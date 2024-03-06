@@ -191,6 +191,17 @@ mixin _$HomePageStore on _HomePageStoreBase, Store {
   }
 
   @override
+  void resetStore() {
+    final _$actionInfo = _$_HomePageStoreBaseActionController.startAction(
+        name: '_HomePageStoreBase.resetStore');
+    try {
+      return super.resetStore();
+    } finally {
+      _$_HomePageStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 imagesList: ${imagesList},

@@ -55,6 +55,16 @@ abstract class _HomePageStoreBase with Store {
     page = value;
   }
 
+  @action
+  void resetStore() {
+    imagesList = ObservableList.of([]);
+    isLoadingMoreImages = false;
+    hasErrorLoadingMoreImages = false;
+    searchTerm = null;
+    searchResult = null;
+    page = 0;
+  }
+
   @computed
   DateTime get endDate => DateTime.now()
       .subtract(Duration(days: page * (Constants.daysToFetchPictures + 1)));

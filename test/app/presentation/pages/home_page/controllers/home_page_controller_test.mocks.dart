@@ -259,6 +259,15 @@ class MockHomePageStore extends _i1.Mock implements _i4.HomePageStore {
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  void resetStore() => super.noSuchMethod(
+        Invocation.method(
+          #resetStore,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
 }
 
 /// A class which mocks [GetApodImagesListUsecase].
