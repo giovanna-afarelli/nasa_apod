@@ -94,7 +94,7 @@ void main() {
       );
     });
 
-    test('When the repository returns Left(), the usecase should Left()',
+    test('When the repository returns Left(), the usecase should return Left()',
         () async {
       when(mockNasaRepository.getImagesList()).thenAnswer(
         (_) async => Left(
