@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:nasa_apod/app/presentation/pages/home_page/home_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -28,12 +29,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: Center(
-        child: SizedBox(
+        child: Lottie.asset(
+          'assets/rocket.json',
           height: 200,
           width: 200,
-          child: Image.asset("assets/dart_bird.png"),
         ),
       ),
     );
