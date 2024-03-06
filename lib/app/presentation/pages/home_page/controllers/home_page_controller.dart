@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nasa_apod/app/domain/entities/apod.dart';
+import 'package:nasa_apod/app/domain/usecases/get_apod_from_local_storage_usecase.dart';
 import 'package:nasa_apod/app/domain/usecases/get_apod_images_list_usecase.dart';
+import 'package:nasa_apod/app/domain/usecases/save_most_recent_apod_in_local_storage_usecase.dart';
 import 'package:nasa_apod/app/presentation/pages/details_page/details_page.dart';
 import 'package:nasa_apod/app/presentation/pages/home_page/stores/home_page_store.dart';
 import 'package:nasa_apod/di.dart';
+import 'package:nasa_apod/shared/usecase.dart';
 import 'package:nasa_apod/shared/utils/dartz_utils.dart';
 import 'package:nasa_apod/shared/utils/datetime_utils.dart';
 
@@ -12,6 +15,10 @@ class HomePageController {
 
   final getApodImagesListUsecase = Di.get<GetApodImagesListUsecase>();
   final searchController = TextEditingController();
+  final saveMostRecentApodInLocalStorageUsecase =
+      Di.get<SaveMostRecentApodInLocalStorageUsecase>();
+  final getApodFromLocalStorageUsecase =
+      Di.get<GetApodFromLocalStorageUsecase>();
 
   HomePageController({
     required this.pageStore,
@@ -41,6 +48,10 @@ class HomePageController {
       return;
     }
     pageStore.setImagesList(listOrFailure.asRight().reversed.toList());
+
+    if (pageStore.page == 0) {
+      _saveMostRecentPictureInLocalStorage();
+    }
   }
 
   void onTapImage(BuildContext context, Apod image) {
@@ -70,5 +81,37 @@ class HomePageController {
 
   void onTapTryLoadingAgain() {
     _loadImagesList();
+  }
+
+  void _saveMostRecentPictureInLocalStorage() async {
+    await saveMostRecentApodInLocalStorageUsecase(
+      SaveMostRecentApodInLocalStorageUsecaseParams(
+          apod: pageStore.imagesList.first),
+    );
+  }
+
+  void onTapSeeMostRecentLocalApod(BuildContext context) async {
+    final apodOrFailure =
+        await getApodFromLocalStorageUsecase(const NoParams());
+
+    if (apodOrFailure.isLeft()) {
+      return;
+    }
+
+    final apod = apodOrFailure.asRight();
+
+    if (context.mounted) {
+      Navigator.of(context).pushNamed(
+        DetailsPage.routeName,
+        arguments: DetailsPageArgs(
+          apod: Apod(
+            title: apod.title,
+            url: apod.url,
+            explanation: apod.explanation,
+            date: apod.date,
+          ),
+        ),
+      );
+    }
   }
 }

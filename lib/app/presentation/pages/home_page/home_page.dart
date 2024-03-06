@@ -65,6 +65,14 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () => pageController.onTapTryLoadingAgain(),
                     child: const Text("Tentar novamente"),
                   ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  ElevatedButton(
+                    onPressed: () =>
+                        pageController.onTapSeeMostRecentLocalApod(context),
+                    child: const Text("Ver última imagem salva"),
+                  ),
                 ],
               ),
             );
